@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.ArticleManageMapper">
+
+    <select id="getAllArticle" resultType="article" useCache="false">
+        select a.*,u.nickname,c.cateName
+        from user u right join article a on u.id = a.uid
+        left join category c on a.cid = c.id
+        <where>
+            <if test="state != null and state == 0">
+                a.state = #{state}
+            </if>
+            <if test="state != null and state == 1">
+                a.state = #{state}
+            </if>
+            <if test="state != null and state == 2">
+                a.state = #{state}
+            </if>
+            <if test="keywords != '' and keywords != null">
+                and a.title like '%${keywords}%'
+            </if>
+            <if test="username != '' and username != null">
+                and u.username = #{username}
+            </if>
+            and a.state != 3
+        </where>
+    </select>
+
+    <select id="getContentsArticle" resultType="article">
+        select * from article where id = #{id}
+    </select>
+
+    <update id="deleteArticle">
+        update article set state =
+        <if test="state != null and state == 1">
+            2
+        </if>
+        <if test="state != null and state == 0">
+            2
+        </if>
+        <if test="state != null and state == 2">
+            3
+        </if>
+        where id in
+        <foreach collection="aids" index="index" item="arr" open="(" close=")" separator=",">
+            #{arr}
+        </foreach>
+    </update>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.PvMapper">
+    <insert id="pvStatisticsPerDay">
+        INSERT INTO pv(countDate,pv,uid) SELECT CURRENT_DATE(),totalPv-pv,t.`uid` FROM pvview p,totalpvview t WHERE p.`uid`=t.`uid`
+    </insert>
+
+    <select id="getCategories" resultType="String" parameterType="long">
+        SELECT countDate from pv WHERE uid=#{uid} ORDER by countDate limit 7
+    </select>
+    <select parameterType="long" id="getDataStatistics" resultType="int">
+        SELECT pv from pv WHERE uid=#{uid} ORDER by countDate limit 7
+    </select>
+</mapper>

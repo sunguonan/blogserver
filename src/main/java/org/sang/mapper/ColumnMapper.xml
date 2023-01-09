@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.ColumnMapper">
+
+    <select id="getAllCategory" resultType="category">
+        select `id`, `cateName`, `date` from category;
+    </select>
+
+    <insert id="insertCategory">
+        insert into category (cateName, date) values (#{cateName},#{date});
+    </insert>
+
+    <update id="updateCategory">
+        update category set cateName = #{cateName} where id = #{id};
+    </update>
+
+    <delete id="deleteCategory">
+        delete from category where id in
+        <foreach collection="array" index="index" item="arr" open="(" close=")" separator=",">
+            #{arr}
+        </foreach>
+    </delete>
+</mapper>
